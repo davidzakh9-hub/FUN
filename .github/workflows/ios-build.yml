@@ -6,14 +6,8 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - name: Checkout Configuration Files
+      - name: Checkout Full Codebase
         uses: actions/checkout@v4
-
-      - name: Clone Full Codebase
-        run: |
-          git clone https://github.com full-source
-          cp -R full-source/* .
-          rm -rf full-source
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
