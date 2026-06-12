@@ -23,12 +23,12 @@ jobs:
       - name: Compile Unsigned IPA Build
         run: |
           cd ios
-          xcodebuild -workspace *.xcworkspace -scheme * -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO
+          xcodebuild -workspace FUN.xcworkspace -scheme FUN -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO
 
       - name: Package Into IPA File
         run: |
           mkdir -p build/Payload
-          cp -R ios/build/Build/Products/Release-iphoneos/*.app build/Payload
+          cp -R ios/build/Build/Products/Release-iphoneos/FUN.app build/Payload
           cd build && zip -r standalone-app.ipa Payload
 
       - name: Upload Completed IPA
