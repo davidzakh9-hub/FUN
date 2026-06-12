@@ -1,0 +1,44 @@
+name: Free Standalone IPA Build
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Configuration Files
+        uses: actions/checkout@v4
+
+      - name: Clone Full Codebase
+        run: |
+          git clone https://github.com full-source
+          cp -R full-source/* .
+          rm -rf full-source
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Generate Local iOS Project
+        run: npx expo prebuild --platform ios
+
+      - name: Compile Unsigned IPA Build
+        run: |
+          cd ios
+          xcodebuild -workspace *.xcworkspace -scheme * -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO
+
+      - name: Package Into IPA File
+        run: |
+          mkdir -p build/Payload
+          cp -R ios/build/Build/Products/Release-iphoneos/*.app build/Payload
+          cd build && zip -r standalone-app.ipa Payload
+
+      - name: Upload Completed IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-ipa
+          path: build/standalone-app.ipa
