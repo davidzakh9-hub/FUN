@@ -17,18 +17,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Generate Local iOS Project
-        run: npx expo prebuild --platform ios
-
-      - name: Compile Unsigned IPA Build
-        run: |
-          cd ios
-          xcodebuild -workspace FUN.xcworkspace -scheme FUN -configuration Debug -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" PROVISIONING_PROFILE_SPECIFIER=""
+      - name: Export App Bundle
+        run: npx expo export --platform ios
 
       - name: Package Into IPA File
         run: |
           mkdir -p build/Payload
-          cp -R ios/build/Build/Products/Debug-iphoneos/FUN.app build/Payload
+          cp -R dist build/Payload/FUN.app
           cd build && zip -r standalone-app.ipa Payload
 
       - name: Upload Completed IPA
