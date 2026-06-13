@@ -23,7 +23,7 @@ jobs:
       - name: Compile Unsigned IPA Build
         run: |
           cd ios
-          xcodebuild -workspace FUN.xcworkspace -scheme FUN -configuration Debug -sdk iphoneos CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" PROVISIONING_PROFILE_SPECIFIER=""
+          xcodebuild -workspace FUN.xcworkspace -scheme FUN -configuration Debug -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" PROVISIONING_PROFILE_SPECIFIER=""
 
       - name: Package Into IPA File
         run: |
